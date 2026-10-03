@@ -1,0 +1,10 @@
+# Normalise line endings in the repo itself, so the files committed are the
+# files served, regardless of who clones on Windows or Linux.
+* text=auto eol=lf
+
+# Binary assets — never touched.
+*.png binary
+*.webp binary
+*.avif binary
+*.jpg binary
+*.ico binary

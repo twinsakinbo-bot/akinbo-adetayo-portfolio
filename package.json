@@ -1,0 +1,14 @@
+{
+  "name": "akinbo-adetayo-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portfolio site for Akinbo Adetayo — Data Analyst & Web Developer",
+  "scripts": {
+    "test": "node scripts/regress.js",
+    "images": "node scripts/optimize-images.mjs"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^24.0.0",
+    "sharp": "^0.34.0"
+  }
+}

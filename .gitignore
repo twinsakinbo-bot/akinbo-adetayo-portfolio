@@ -1,0 +1,19 @@
+# Dependencies (only used for the local regression suite)
+node_modules/
+package-lock.json
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# Original 2.2MB source photo — superseded by the optimised pic.webp / pic.avif /
+# pic-opt.png derivatives. Kept out of the repo so nobody downloads the 94%
+# dead weight; regenerate with `npm run images` if you ever need it again.
+pic.png
+
+# Local env
+.env
+.env.local

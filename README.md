@@ -2,7 +2,7 @@
 
 Personal portfolio site: **Data Analyst & Web Developer**, based in Nigeria.
 
-Live: **[twinsakinbo-bot.github.io](https://twinsakinbo-bot.github.io)**
+Live: **[twinsakinbo-bot.github.io](https://twinsakinbo-bot.github.io/akinbo-adetayo-portfolio/)**
 
 ## Stack
 

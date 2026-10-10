@@ -1,34 +1,49 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 :root{
-  --white:#fdf7f2;
-  --black:#1a0e08;
-  --gray:#f6e9df;
-  --border:#e6d3c4;
-  --muted:#8a6b58;
-  --accent:#e8590c;
-  --dim:#4a342a;
-  --dim-2:#5c4436;
-  --dim-3:#8a6b58;
-  --faint:#a38571;
-  --sub:#6b5244;
-  --dim-4:#8a6b58;
-  --glow:#ff7a1a;
+  --white:#f5faf9;
+  --black:#0b2a2e;
+  --gray:#e6f0ee;
+  --border:#d3e3e0;
+  --muted:#56716f;
+  --accent:#0f766e;
+  --dim:#3f5f5e;
+  --dim-2:#4a6765;
+  --dim-3:#56716f;
+  --faint:#56716f;
+  --sub:#526f6d;
+  --dim-4:#56716f;
+  --glow:#14b8a6;
+  /* Alpha steps of --accent, used wherever the old colour-blending
+     function appeared. Safari below 16.2 does not support it and silently
+     drops the whole declaration, so these are pre-computed per theme. */
+  --accent-a42:rgba(15,118,110,.42);
+  --accent-a50:rgba(15,118,110,.50);
+  --accent-a55:rgba(15,118,110,.55);
+  --accent-a60:rgba(15,118,110,.60);
+  --accent-a80:rgba(15,118,110,.80);
+  --white-a26:rgba(245,250,249,.26);
 }
 html.dark{
-  --white:#0e0906;
-  --black:#f6ece4;
-  --gray:#1a1210;
-  --border:#2e211a;
-  --muted:#9c8272;
-  --accent:#ff6b2c;
-  --dim:#d4c2b6;
-  --dim-2:#c2ada0;
-  --dim-3:#9c8272;
-  --faint:#8a6f60;
-  --sub:#b09887;
-  --dim-4:#9c8272;
-  --glow:#ffa94d;
+  --white:#081d20;
+  --black:#e6f4f2;
+  --gray:#0f2a2d;
+  --border:#1b3c40;
+  --muted:#8fafae;
+  --accent:#5eead4;
+  --dim:#b6d2d0;
+  --dim-2:#a8c4c2;
+  --dim-3:#8fafae;
+  --faint:#8fafae;
+  --sub:#9cbab8;
+  --dim-4:#8fafae;
+  --glow:#2dd4bf;
+  --accent-a42:rgba(94,234,212,.42);
+  --accent-a50:rgba(94,234,212,.50);
+  --accent-a55:rgba(94,234,212,.55);
+  --accent-a60:rgba(94,234,212,.60);
+  --accent-a80:rgba(94,234,212,.80);
+  --white-a26:rgba(8,29,32,.26);
 }
 body{
   background:var(--white);
@@ -38,8 +53,22 @@ body{
   font-weight:400;
   line-height:1.6;
   overflow-x:hidden;
+  /* Safari on iOS inflates text in landscape and on some home-screen
+     launches unless this is pinned to 100%. */
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
   transition:background .25s,color .25s;
 }
+
+/* A link that sits inside running prose. Kept as a class rather than an
+   inline style so the markup stays plain and portable. */
+.inline-link{
+  color:var(--black);
+  text-decoration:underline;
+  text-underline-offset:3px;
+  text-decoration-thickness:1px;
+}
+.inline-link:hover{color:var(--accent)}
 
 /* AMBIENT CANVAS */
 #weather-canvas{
@@ -74,7 +103,7 @@ footer{position:relative;z-index:1}
 /* PROJECT MODAL */
 .modal-overlay{
   display:none;position:fixed;inset:0;z-index:1000;
-  background:rgba(26,14,8,.6);backdrop-filter:blur(6px);
+  background:rgba(8,45,48,.6);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
   align-items:center;justify-content:center;padding:1.5rem;
 }
 .modal-overlay.open{display:flex}
@@ -128,13 +157,13 @@ nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
   padding:1rem 3rem;
-  background:rgba(253,247,242,0.94);
-  backdrop-filter:blur(16px);
+  background:rgba(245,250,249,0.94);
+  -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
   border-bottom:1px solid var(--border);
   gap:1.5rem;
   transition:background .25s,border-color .25s;
 }
-html.dark nav{background:rgba(14,9,6,0.94)}
+html.dark nav{background:rgba(8,29,32,0.94)}
 .nav-logo{
   font-family:'Calibri',Calibri,Consolas,monospace;
   font-size:.75rem;color:var(--black);text-decoration:none;
@@ -303,8 +332,8 @@ html.dark nav{background:rgba(14,9,6,0.94)}
   object-fit:cover;object-position:center 18%;
   transform:scale(1.01);transition:transform .6s cubic-bezier(.2,.7,.3,1),filter .6s;
 }
-.photo-frame:hover .photo-slot img{transform:scale(1.05)}
-.photo-frame.lit .photo-slot img{filter:saturate(1.04) contrast(1.02)}
+
+
 
 /* TIMELINE ROWS */
 .xrow{
@@ -504,7 +533,7 @@ footer{
 #progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:200;pointer-events:none}
 #progress-bar{
   height:100%;width:0;background:var(--accent);
-  box-shadow:0 0 10px color-mix(in srgb, var(--accent) 60%, transparent);
+  box-shadow:0 0 10px var(--accent-a60);
   transition:width .12s linear;
 }
 
@@ -538,11 +567,12 @@ nav{animation:fadeDown .7s cubic-bezier(.2,.8,.2,1) both}
 .lbl.wiped::after{transform:scaleX(1)}
 
 /* Nav gains weight once scrolled */
-nav.scrolled{box-shadow:0 6px 24px -12px rgba(58,26,8,.35)}
+nav.scrolled{box-shadow:0 6px 24px -12px rgba(11,42,46,.35)}
+html.dark nav.scrolled{box-shadow:0 6px 24px -12px rgba(0,10,12,.6)}
 
 /* Card hover lift + accent edge */
 .pfeat{transition:box-shadow .25s,transform .25s}
-.pfeat:hover{transform:translateY(-3px);box-shadow:0 18px 40px -24px color-mix(in srgb,var(--accent) 55%,transparent)}
+.pfeat:hover{transform:translateY(-3px);box-shadow:0 18px 40px -24px var(--accent-a55)}
 .pcard:hover{border-color:var(--accent)}
 .plink:hover{background:var(--accent);border-color:var(--accent);color:var(--white)}
 .pfeat,.pcard{will-change:transform}
@@ -583,20 +613,13 @@ nav.scrolled{box-shadow:0 6px 24px -12px rgba(58,26,8,.35)}
   padding-bottom:.2em;margin-bottom:-.2em;
 }
 .wl{display:block}
-.w > i,.wl > i{
-  display:inline-block;font-style:inherit;
-  transform:translateY(145%) rotate(4deg);
-  transition:transform .95s cubic-bezier(.19,1,.22,1);
-  will-change:transform;
-}
-.w.in > i,.wl.in > i{transform:none}
 
-/* Slight per-word rotation decay, set inline by JS (max 1.6deg) so a
-   paragraph of 200 words never looks like a slot machine. */
-.wordmark > i{transform:translateY(145%) rotate(var(--wrot,0deg))}
-.wordmark.in > i{transform:translateY(0) rotate(0deg)}
 
-.hero-name .w > i{transition-duration:1.05s}
+
+
+
+
+
 
 /* ── Heading line flip ──────────────────────────────────────────────────
    Headings reveal as whole lines with a soft rotateX, not word by word,
@@ -619,29 +642,10 @@ nav.scrolled{box-shadow:0 6px 24px -12px rgba(58,26,8,.35)}
 .eyebrow{opacity:0;animation:eyebrowIn .9s cubic-bezier(.2,.8,.2,1) .62s forwards}
 @keyframes eyebrowIn{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:none}}
 
-/* ── Hero ambient glow ──────────────────────────────────────────────────
-   A wide, very soft accent bloom behind the name. Slow breathing only, so
-   it never competes with the type for attention.
-   .hero-main and .stats-bar are lifted to z-index 1 so the type stays on
-   top of it — a positioned glow would otherwise paint over static text. */
-#hero-glow{
-  position:absolute;z-index:0;pointer-events:none;
-  left:50%;top:26%;width:min(1500px,150vw);height:min(900px,95vh);
-  transform:translate(-50%,-50%);
-  background:radial-gradient(ellipse at center,
-    color-mix(in srgb, var(--accent) 20%, transparent) 0%,
-    color-mix(in srgb, var(--accent) 8%, transparent) 38%,
-    transparent 68%);
-  filter:blur(24px);
-  opacity:0;
-  animation:glowIn 1.8s ease .3s forwards,glowBreathe 11s ease-in-out 2.1s infinite;
-}
+
 .hero-main,.stats-bar{position:relative;z-index:1}
-@keyframes glowIn{to{opacity:1}}
-@keyframes glowBreathe{
-  0%,100%{transform:translate(-50%,-50%) scale(1)}
-  50%    {transform:translate(-50%,-50%) scale(1.09)}
-}
+
+
 
 /* ── Divider: draws itself in from the left ──────────────────────────── */
 .divider{
@@ -665,10 +669,7 @@ nav.scrolled{box-shadow:0 6px 24px -12px rgba(58,26,8,.35)}
   background:linear-gradient(to bottom,
     transparent, var(--border) 6%, var(--border) 94%, transparent);
 }
-.xlist.railed::before{
-  background:linear-gradient(to bottom,
-    transparent, var(--accent) 6%, var(--accent) 94%, transparent);
-}
+
 .xrow{position:relative}
 .xrow::before{
   content:'';position:absolute;left:-1.6rem;top:2.9rem;
@@ -677,10 +678,7 @@ nav.scrolled{box-shadow:0 6px 24px -12px rgba(58,26,8,.35)}
   border:1px solid var(--border);
   transition:background .5s cubic-bezier(.2,.8,.2,1),border-color .5s,transform .5s cubic-bezier(.2,.8,.2,1);
 }
-.xrow.hit::before{
-  background:var(--accent);border-color:var(--accent);
-  transform:scale(1.45);
-}
+
 html.dark .xrow::before{background:var(--black)}
 
 /* Hide the rail on narrow screens, where the date column collapses and the
@@ -709,12 +707,12 @@ html.dark .xrow::before{background:var(--black)}
 }
 .skill-primary:hover{
   transform:translateY(-2px);
-  box-shadow:0 10px 22px -14px color-mix(in srgb,var(--accent) 80%,transparent);
+  box-shadow:0 10px 22px -14px var(--accent-a80);
 }
 .skill-secondary:hover{
   transform:translateY(-2px);
   border-color:var(--accent);
-  box-shadow:0 10px 22px -14px color-mix(in srgb,var(--accent) 55%,transparent);
+  box-shadow:0 10px 22px -14px var(--accent-a55);
 }
 
 /* ── Pointer-reactive surfaces ──────────────────────────────────────────
@@ -725,7 +723,7 @@ html.dark .xrow::before{background:var(--black)}
   position:absolute;left:-140%;top:-60%;width:60%;height:220%;
   pointer-events:none;opacity:0;
   background:linear-gradient(100deg,transparent,
-    color-mix(in srgb,var(--white) 26%,transparent),transparent);
+    var(--white-a26),transparent);
   transform:rotate(14deg);
 }
 .sheen:hover > .sheen-bar{animation:sheenSweep 1.05s cubic-bezier(.2,.7,.3,1)}
@@ -735,28 +733,11 @@ html.dark .xrow::before{background:var(--black)}
   100%{left:160%;opacity:0}
 }
 
-.spot{--mx:50%;--my:50%;position:relative}
-.spot::after{
-  content:'';position:absolute;inset:0;pointer-events:none;
-  border-radius:inherit;
-  opacity:0;transition:opacity .4s;
-  background:radial-gradient(340px circle at var(--mx) var(--my),
-    color-mix(in srgb,var(--accent) 13%,transparent),transparent 62%);
-}
-.spot:hover::after{opacity:1}
 
-/* Accent edge that tracks the pointer around the border. */
-.spot-edge::before{
-  content:'';position:absolute;inset:0;pointer-events:none;
-  border-radius:inherit;padding:1px;opacity:0;
-  -webkit-m:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-          mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor;mask-composite:exclude;
-  transition:opacity .4s;
-  background:radial-gradient(220px circle at var(--mx) var(--my),
-    var(--accent),color-mix(in srgb,var(--accent) 30%,transparent) 45%,transparent 70%);
-}
-.spot-edge:hover::before{opacity:1}
+
+
+
+
 
 /* ── Avatar ring: a slow dashed orbit around the photo slot ───────────── */
 /* The frame carries the real width. It must NOT be a shrink-to-fit
@@ -768,12 +749,12 @@ html.dark .xrow::before{background:var(--black)}
 }
 .photo-frame::after{
   content:'';position:absolute;inset:-10px;border-radius:6px;
-  border:1px dashed color-mix(in srgb,var(--accent) 42%,transparent);
+  border:1px dashed var(--accent-a42);
   opacity:0;
-  animation:spinSlow 26s linear infinite;
 }
 .photo-frame.lit::after{opacity:.85}
-@keyframes spinSlow{to{transform:rotate(360deg)}}
+.photo-frame:hover .photo-slot img{transform:scale(1.05)}
+.photo-frame.lit .photo-slot img{filter:saturate(1.04) contrast(1.02)}
 
 /* ── Header link underline ────────────────────────────────────────────── */
 .nav-links a{position:relative}
@@ -794,9 +775,9 @@ html.dark .xrow::before{background:var(--black)}
   animation:pulseDot 2.4s ease-out infinite;
 }
 @keyframes pulseDot{
-  0%  {box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 50%,transparent)}
-  70% {box-shadow:0 0 0 7px color-mix(in srgb,var(--accent) 0%,transparent)}
-  100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 0%,transparent)}
+  0%  {box-shadow:0 0 0 0 var(--accent-a50)}
+  70% {box-shadow:0 0 0 7px transparent}
+  100%{box-shadow:0 0 0 0 transparent}
 }
 
 /* ── Stats: hover lift + accent flash on the number ───────────────────── */
@@ -826,26 +807,19 @@ html.no-anim .stagger > *,
 html.no-anim .w > i,
 html.no-anim .wl > i,
 html.no-anim .eyebrow{opacity:1 !important;transform:none !important}
-body.no-anim #hero-glow,
-html.no-anim #hero-glow{display:none}
 body.no-anim .divider::after,
 html.no-anim .divider::after{transform:scaleX(1)}
-body.no-anim .xlist.railed::before,
-html.no-anim .xlist.railed::before{background:var(--border)}
-body.no-anim .xrow.hit::before,
-html.no-anim .xrow.hit::before{background:var(--border);border-color:var(--border)}
-
 /* ── Reduced motion: same treatment, plus stop the decorative loops ───── */
 @media(prefers-reduced-motion:reduce){
-  .w > i,.wl > i{transform:none !important;transition:none !important}
+  
   .eyebrow{opacity:1 !important;animation:none !important}
   .chips.in .skill-primary,.chips.in .skill-secondary{animation:none !important;transform:none !important}
-  #hero-glow{display:none}
+  
   .divider::after{transform:scaleX(1)}
-  .xlist.railed::before{background:var(--border) !important}
+  
   .ticker-item::before{animation:none !important}
-  .photo-frame::after{display:none}
-  .spot::after,.spot-edge::before{opacity:0 !important}
+  
+  
 }
 
 /* RESPONSIVE */
@@ -954,5 +928,84 @@ html.no-anim .xrow.hit::before{background:var(--border);border-color:var(--borde
     animation-duration:.01ms !important;animation-iteration-count:1 !important;
     transition-duration:.01ms !important;
   }
+  #weather-canvas{display:none}
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   PHONE / TOUCH LAYER
+   Two separate problems are solved here:
+
+   1. Hover styles. On iOS and Android a :hover rule latches on after a tap
+      and stays until you tap elsewhere, so cards stay lifted and menus stay
+      open at random. Every hover effect is therefore opted into only when
+      the device actually has a hovering pointer.
+
+   2. Cost. The decorative loops (canvas motes, pulsing dots, breathing
+      glows) are what actually drains a phone battery and drops frames on a
+      long page. Phones get the layout and the content; they do not get the
+      continuous animation.
+   ═════════════════════════════════════════════════════════════════════════ */
+
+@media (hover: none), (pointer: coarse){
+  /* Kill the latched-hover lift entirely. */
+  .pfeat:hover,
+  .pcard:hover,
+  .plink:hover,
+  .skill-secondary:hover,
+  .cert-chip:hover,
+  .theme-toggle:hover,
+  .btn-ghost:hover{transform:none}
+
+  .nav-links a:hover::after{transform:scaleX(0);transform-origin:right}
+  .nav-links a.active::after{transform:scaleX(1)}
+
+  /* Tapping a card should not leave it looking selected. */
+  .pcard:active,.pfeat:active{transform:none}
+}
+
+@media (max-width:820px){
+  /* Halve the ambient particle budget; the canvas is the single most
+     expensive thing on the page. */
+  .ticker-track{animation-duration:44s}
+
+  /* Cheap, GPU-friendly easing instead of blur/box-shadow glow work. */
+  .pfeat:hover{box-shadow:none}
+  .photo-frame::after,
+  .spot::after,
+  .spot-edge::before{opacity:0 !important}
+
+  /* Soften every remaining loop so nothing pulses hard under the thumb. */
+  .ticker-item::before{animation:none}
+
+  /* Shorter reveals: on a phone you have already scrolled past most of
+     these by the time a long transition would finish. */
+  .reveal,.stagger > *{
+    transition-duration:.34s !important;
+    transition-delay:0ms !important;
+  }
+  .lbl::after{transition-duration:.4s}
+  nav{animation:none}
+  .hero-main > *,
+  .hero-main > *:nth-child(1),
+  .hero-main > *:nth-child(2),
+  .hero-main > *:nth-child(3),
+  .stats-bar{animation:none;opacity:1;transform:none}
+  .ticker-wrap{animation:none;opacity:1}
+}
+
+@media (max-width:820px) and (orientation:landscape){
+  /* Vertical space is scarce; trim the tallest vertical padding. */
+  .wrap{padding-top:2.5rem;padding-bottom:2.5rem}
+  .cta-section{padding-top:3rem;padding-bottom:3rem}
+}
+
+/* Very small phones: drop the canvas entirely. It is pure decoration and
+   this is where it costs the most relative to what you see. */
+@media (max-width:420px){
+  #weather-canvas{display:none}
+}
+
+/* Save-Data users get the same courtesy. */
+@media (prefers-reduced-data: reduce){
   #weather-canvas{display:none}
 }

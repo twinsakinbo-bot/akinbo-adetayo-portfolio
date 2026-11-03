@@ -521,6 +521,9 @@ footer{
   display:flex;justify-content:space-between;align-items:center;
 }
 .fl{font-family:'Calibri',Calibri,Consolas,monospace;font-size:.65rem;color:var(--muted);letter-spacing:.06em}
+.footer-links{display:flex;gap:1rem;align-items:center}
+.footer-links a{font-family:'Calibri',Calibri,Consolas,monospace;font-size:.65rem;color:var(--muted);letter-spacing:.06em;text-decoration:none;transition:color .2s ease}
+.footer-links a:hover{color:var(--accent)}
 .fr{font-family:'Calibri',Calibri,Consolas,monospace;font-size:.62rem;color:var(--faint)}
 
 /* REVEAL */

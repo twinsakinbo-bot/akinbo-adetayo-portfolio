@@ -144,7 +144,7 @@
     <div>
       <p class="about-lead">I finished secondary school last year. Since then I've built and put seven projects online.</p>
       <div class="about-body">
-        <p>Most people I've met only really start building once they get a job. I started before that, because sitting still felt like a choice I couldn't afford. AeroLearn is live and being used. It's a learning platform for Nigerian secondary school students, and it covers the full JSS 1 to SS 3 curriculum for JAMB, WAEC and NECO. Aether AI is a chat tool for developers, built so it keeps working when one of the AI providers goes down. Both are online right now, doing what I made them to do.</p>
+        <p>Most people I've met only really start building once they get a job. I started before that, because sitting still felt like a choice I couldn't afford. AeroLearn is live and being used. It's a learning platform for Nigerian secondary school students, and it covers the full JSS 1 to SS 3 curriculum for JAMB, WAEC and NECO. Aether AI is an AI gateway: one OpenAI-compatible API in front of every frontier model, with automatic routing, failover between providers and token-accurate metering. Both are online right now, doing what I made them to do.</p>
         <p>I'm also studying Data Analytics at HillCity EdgeTech, where I use Excel, Power BI, Python and SQL. It's not just clicking through tutorials. I'm learning to clean up a messy dataset, work out what it's really telling me, and build a chart that doesn't lie about it.</p>
         <p>I'm in Nigeria and starting university next year. I'm looking for an internship, a junior developer role, or anyone who just needs a website built or a dataset cleaned up properly. My email and phone number are at the bottom of this page, and I'd genuinely like to hear from you.</p>
       </div>
@@ -199,7 +199,7 @@
         <ul class="xbullets">
           <li>Building whole websites myself, from the database and login system right through to putting them online.</li>
           <li>Built <strong>AeroLearn</strong>, a learning platform for Nigerian secondary school students. It covers 28 subjects from JSS 1 to SS 3 and it's live at <a class="inline-link" href="https://aerolearn.name.ng" target="_blank" rel="noopener">aerolearn.name.ng</a>.</li>
-          <li>Built <strong>Aether AI</strong>, a chat tool for developers. If one of the five AI providers rate-limits or times out, it quietly moves to the next one instead of showing an error.</li>
+          <li>Built <strong>Aether AI</strong>, an AI gateway: one OpenAI-compatible API in front of every frontier model. Requests are routed across pooled multi-provider chains and fail over in sub-second time instead of showing an error.</li>
           <li>Also built a searchable archive of 216 memes, and <strong>Danny</strong>, my own AI assistant. It has 123 tools and it drives my Windows laptop by voice, terminal or browser, including moving the mouse and typing for real.</li>
         </ul>
       </div>
@@ -307,17 +307,17 @@
         <div class="xloc">obasi-ai.vercel.app</div>
       </div>
       <div>
-        <div class="xrole" style="font-size:1.15rem;margin-bottom:1.25rem">Reliability Engineering</div>
+        <div class="xrole" style="font-size:1.15rem;margin-bottom:1.25rem">AI Gateway Engineering</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem" class="tile-2">
           <div class="tile">
-            <div class="tile-l">Provider Chain</div>
-            <div class="tile-n">5</div>
-            <div class="tile-t">Cloudflare, Vercel AI Gateway, Groq, Cerebras and OpenRouter tried in order. A 429, 5xx or timeout hands the request straight to the next one.</div>
+            <div class="tile-l">Model Routing</div>
+            <div class="tile-n">Any Model</div>
+            <div class="tile-t">One OpenAI-compatible endpoint resolves any published model id to a live provider, with automatic failover and sub-second cutover.</div>
           </div>
           <div class="tile">
-            <div class="tile-l">Error Discipline</div>
-            <div class="tile-n">400 Rethrow</div>
-            <div class="tile-t">Permanent errors like a bad request rethrow immediately instead of burning through all five providers for nothing.</div>
+            <div class="tile-l">Metering</div>
+            <div class="tile-n">Token-Accurate</div>
+            <div class="tile-t">Every request is metered exactly, with live catalogue discovery and a wallet/billing dashboard on PostgreSQL + Prisma.</div>
           </div>
         </div>
       </div>
@@ -402,11 +402,11 @@
     <div class="pfeat pfeat-clickable" style="margin-top:1.5rem" onclick="openModal('aether')" role="button" tabindex="0"
          onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openModal('aether')}">
       <div class="pfl">
-        <div class="ptag">AI Systems · Next.js 15 · Model Failover · Live at obasi-ai.vercel.app</div>
+        <div class="ptag">AI Gateway · Next.js 15 · Model Routing · Live at obasi-ai.vercel.app</div>
         <div class="pname">Aether AI</div>
         <p class="pdesc">
-          A web-based AI chat built for developers, with the interesting part underneath: automatic model failover. Every request walks a chain of five AI providers, so a rate limit, a 5xx or a timeout hands the request to the next model mid-flight instead of failing.<br><br>
-          Streams over SSE, runs real tool calls including code execution, and logs every attempt to a live diagnostics dashboard so the failover is observable rather than just claimed.
+          An AI gateway that gives developers one OpenAI-compatible endpoint in front of every frontier model: automatic model routing, failover between providers, and token-accurate metering. Point your app at one URL and it resolves any model id to a live provider, streams back the response, and meters exactly what you used.<br><br>
+          Uses pooled multi-provider routing with sub-second failover, a live catalogue that discovers models, and a full dashboard — API keys, usage, wallet and billing — built on Next.js with a PostgreSQL/Prisma stack.
         </p>
         <div class="techs">
           <span class="tech">Next.js 15</span>
@@ -797,15 +797,15 @@ const projects = {
   },
 
   aether: {
-    tag: 'AI Systems · Next.js 15 · Model Failover · Live at obasi-ai.vercel.app',
-    title: 'Aether AI — Developer Chat with Five-Provider Model Failover',
-    objective: 'Build an AI chat for developers that does not fall over the moment one provider rate-limits them. Almost every AI chat app is bound to a single model, so a 429 or a cold start becomes the user\'s problem. I wanted a request that could survive its provider failing mid-flight.',
-    approach: 'I wrote a provider router that tries Cloudflare, the Vercel AI Gateway, Groq, Cerebras and OpenRouter in order. The important detail is error discipline: only retryable failures — 429s, 5xx responses, aborts and timeouts — trigger a fallback, while permanent errors like a 400 rethrow immediately so a genuinely malformed request never burns through all five providers. Each provider gets a 30-second timeout, and responses stream over a hand-written SSE parser. Around that I built real OpenAI tool calling for seven tools, including in-process JavaScript execution, a calculator, guarded URL fetching, web search and remote multi-language code execution. Every attempt is written to a database and surfaced in a live diagnostics dashboard, so the failover is observable rather than something I just claim works.',
+    tag: 'AI Gateway · Next.js 15 · Model Routing · Live at obasi-ai.vercel.app',
+    title: 'Aether AI — One OpenAI-Compatible API for Every Model',
+    objective: 'Build the layer every AI product needs: one OpenAI-compatible endpoint in front of every frontier model, so a developer never has to vendor-lock onto a single provider or hand-roll their own routing. Point your app at one URL and Aether resolves the model, routes the request across pooled multi-provider chains, and meters exactly what you used.',
+    approach: 'I built a gateway that keeps a live catalogue of every published model id and resolves it to a real provider at request time. Requests ride pooled multi-provider routing with sub-second failover: when a provider 429s, 5xxes or times out, the request cuts over to the next provider automatically instead of erroring. Everything is metered token-accurately and surfaced in a full dashboard — API keys, usage, wallet and billing — backed by PostgreSQL through Prisma. Around the core I built the whole product surface: pricing, playground, docs, status, changelog and an admin panel that manages providers and the catalogue directly.',
     outcomes: [
-      { stat: '5', label: 'Provider Chain' },
-      { stat: '7', label: 'Tool Definitions' },
-      { stat: '30s', label: 'Per-Provider Timeout' },
-      { stat: '3', label: 'Max Tool Rounds' }
+      { stat: '1', label: 'Unified Endpoint' },
+      { stat: 'Live', label: 'Catalogue Discovery' },
+      { stat: 'Sub-Sec', label: 'Failover Cutover' },
+      { stat: 'Token', label: 'Accurate Metering' }
     ],
     links: [
       { label: 'Visit Aether AI ↗', href: 'https://obasi-ai.vercel.app' },
